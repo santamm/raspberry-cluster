@@ -54,4 +54,10 @@ Now install k3sup on the node:
 k3sup install --ip $IP --user pi``
 
 
+# Install agent node
+export AGENT_IP=192.168.0.101
 
+export SERVER_IP=192.168.0.100
+export USER=root
+
+k3sup join --ip $AGENT_IP --server-ip $SERVER_IP --user $USER
