@@ -37,20 +37,19 @@ network:
 where 192.168.0.201 is the IP you want to assign to your host and 192.168.0.1 is the IP of your router.
 
 You can now save the new configuration:
+
 ```sudo netplan apply```
 
 #### Set Up SSH Keys on Ubuntu 
 SSH keys provide an easy, secure way of logging into your server and are recommended for all users. You will log in to your hosts from your machine without even having to enter a password.
 If you already have an ssh key on your machine, all you have to do is:
-```
-ssh-copy-id username@remote_host
-```
+
+`ssh-copy-id username@remote_host`
 
 You can check if you have one by running:
-```
-ls ~/.ssh
 
-```
+`ls ~/.ssh`
+
 if have 2 files `id.rsa` and `id.rsa_pub` then you are set. Otherwise you will have to first create an RSA key pai by running:
 
 ```
