@@ -201,10 +201,6 @@ wifis:
 
 ```
 
-
-
-```
-
 Otherwise if connecting through a WiFi hotspot, add instead the following lines:
 
 ```
