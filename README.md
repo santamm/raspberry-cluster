@@ -154,6 +154,17 @@ You can now validate that the Control Plane has been installed with the kubectl 
 ```
 kubectl get nodes
 ```
+
+# Install a CNI add-on
+A CNI add-on handles configuration and cleanup of the pod networks. We will use the Flannel CNI add-on.    
+
+```
+# Download the Flannel YAML data and apply it
+#
+curl -sSL https://raw.githubusercontent.com/coreos/flannel/v0.12.0/Documentation/kube-flannel.yml | kubectl apply -f -
+
+```
+    
     
 ### Join the workers nodes to the control plane
 To join a worker node to the cluster, login into the node and run the following:
@@ -177,6 +188,28 @@ kubeadm join \
   
 sudo kubeadm join 192.168.0.201:6443 --token w4r8s6.w8yzb2pvvnlhb9cp --discovery-token-ca-cert-hash sha256:f6d91b2f0bf4bd26a3c66894c5ea9db5fe6bc7499ef817d8847e074477261d10
 ```
+
+#### What if I want my master node to be a worker too?
+I had only two Raspberry Pis at my disposal, so I did not want to commit one of them to a control plane solely. That is why I unset the taint automatically applied to the control-plane node by running the following command:
+
+`kubectl edit node ubuntu-controlplane`
+
+and deleted the ollowing 2 lines:
+
+```
+ - effect: NoSchedule
+   key: node-role.kubernetes.io/master
+```
+
+
+#### Essential add-ons
+- Helm
+- Ingress controller
+- Prometheus
+- Grafana
+- cert-manager
+
+
 
 
 
