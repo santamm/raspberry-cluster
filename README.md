@@ -203,7 +203,7 @@ and deleted the ollowing 2 lines:
 
 
 #### Essential add-ons
-- Helm
+- Helm(https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes): Kubernetes package manager, to install packaged applications (charts)
 - Ingress controller
 - Prometheus
 - Grafana
