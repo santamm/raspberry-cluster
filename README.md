@@ -11,7 +11,7 @@ Boot your host, as Ubuntu comes with ssh already installed you can ssh into your
 It is better to assign your hosts static IPs, to avoind trouble when you reboot aas your router might assign a different IP
 #### Assigning a static IP
 If your Ubuntu cloud instance is provisioned with cloud-init, you’ll need to disable it. To do so create the following file:
-`sudo nano /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg`
+```sudo nano /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg```
 ```
 network: {config: disabled}
 ```
