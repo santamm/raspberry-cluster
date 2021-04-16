@@ -202,18 +202,52 @@ and deleted the ollowing 2 lines:
 ```
 
 
-#### Essential add-ons
+### Essential add-ons
 - [Helm](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes): Kubernetes package manager, to install packaged applications (charts)
-- Ingress controller
-- Prometheus
-- Grafana
+- [Nginx Ingress controller](https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/): a specialized load balancer for Kubernetes
+- [Prometheus](https://prometheus.io/docs/introduction/overview/): an open-source systems monitoring and alerting toolkit
+- [Grafana](https://grafana.com/docs/grafana/latest/getting-started/): an open source solution for running data analytics, pulling up metrics that make sense of the massive amount of data & to monitor our apps with the help of cool customizable dashboards.
 - cert-manager
 
+#### Install Helm
+Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure, and deploy applications and services onto Kubernetes clusters. Helm does:
+- Install software.
+- Automatically install software dependencies.
+- Upgrade software.
+- Configure software deployments.
+- Fetch software packages from repositories.
+
+To install, run the ffollowing:
+`curl -s https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash`
+
+Add the chart repositories:
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo add infobloxopen https://infobloxopen.github.io/cert-manager/
+```
+
+#### Install Ingress controller
+A Kubernetes Ingress controller is a specialized load balancer for Kubernetes environments.
+- Accept traffic from outside the Kubernetes platform, and load balance it to pods (containers) running inside the platform
+- Can manage egress traffic within a cluster for services which need to communicate with other services outside of a cluster
+- Are configured using the Kubernetes API to deploy objects called “Ingress Resources”
+- Monitor the pods running in Kubernetes and automatically update the load‑balancing rules when pods are added or removed from a service
+
+Run the following command as from the bare metal section of the Nginx Ingress controller website:
+``` 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.34.1/deploy/static/provider/baremetal/deploy.yaml
+```
+
+#### Install Prometheus
+Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
+To install, run the following:
+
+kubectl create ns monitoring
+helm install prometheus --namespace monitoring stable/prometheus --set server.ingress.enabled=True --set server.ingress.hosts={"prometheus.home.pi"}
 
 
-
-
-#### Connect your Raspberry Pi to the network via WiFi
+##### Appendix: Connect your Raspberry Pi to the network via WiFi
 1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
 
 `ls /sys/class/net`
