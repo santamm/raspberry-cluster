@@ -155,7 +155,7 @@ You can now validate that the Control Plane has been installed with the kubectl 
 kubectl get nodes
 ```
 
-# Install a CNI add-on
+#### Install a CNI add-on
 A CNI add-on handles configuration and cleanup of the pod networks. We will use the Flannel CNI add-on.    
 
 ```
@@ -202,7 +202,7 @@ and deleted the ollowing 2 lines:
 ```
 
 
-### Essential add-ons
+## Essential add-ons
 - [Helm](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes): Kubernetes package manager, to install packaged applications (charts)
 - [Nginx Ingress controller](https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/): a specialized load balancer for Kubernetes
 - [Prometheus](https://prometheus.io/docs/introduction/overview/): an open-source systems monitoring and alerting toolkit
