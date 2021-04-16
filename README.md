@@ -181,30 +181,44 @@ sudo kubeadm join 192.168.0.201:6443 --token w4r8s6.w8yzb2pvvnlhb9cp --discovery
 
 
 #### Connect your Raspberry Pi to the network via WiFi
-- Now connect to the Raspberry Pi over your local network, either with an ethernet cable (better) or WiFi.
-- To connect to wifi, you need to edit the Pi's wpa_supplicanf.conf file under /etc/wpa_supplicant. If you log to the network via WPA2, then add the following:
+1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
 
-`sudo nano /etc/wpa_supplicant/wpa_supplicant.conf`
-and add the following:
-```
-network={
-    ssid="WI-FI_NAME_HERE"
-    psk="Password"
-}
+`ls /sys/class/net`
 
+2. navigate to the `/etc/netplan` directory and locate the appropriate Netplan configuration files.
+
+`sudo nano /etc/netplan/50-cloud-init.yaml`
+
+You will have to add something like this:
 ```
-The password can be configured either as the ASCII representation, in quotes as per the example above, or as a pre-encrypted 32 byte hexadecimal number. You can use the wpa_passphrase utility to generate an encrypted PSK. This takes the SSID and the password, and generates the encrypted PSK. 
-Otherwise if connecting through a WiFi hotspot, add the following lines:
-```
-network={
-  ssid="WI-FI_NAME_HERE"
-  identity="yourUsername@yourInstitution" 
-  password="YOUR_PASSWORD_HERE"
-  }
+wifis:
+    wlan0:
+        dhcp4: true
+        optional: true
+        access-points:
+            "SSID_name":
+                password: "WiFi_password"
+
 ```
 
-Reconfigure the interface with `wpa_cli -i wlan0 reconfigure`
-You can verify whether it has successfully connected using `ifconfig wlan0`
-- Add the following to /boot/cmdline.txt (essential for k3s), but make sure that you don’t add new lines:
-`cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory`
+
+
+```
+
+Otherwise if connecting through a WiFi hotspot, add instead the following lines:
+
+```
+wifis:
+    wlan0:
+        dhcp4: true
+        optional: true
+        access-points:
+            "SSID_name":
+                identity: "yourUsername@yourInstitution"
+                password: "YOUR_password_here"
+
+```
+
+
+
 
