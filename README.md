@@ -242,10 +242,10 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 #### Install Prometheus
 Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
 To install, run the following:
-
+```
 kubectl create ns monitoring
 helm install prometheus --namespace monitoring stable/prometheus --set server.ingress.enabled=True --set server.ingress.hosts={"prometheus.home.pi"}
-
+```
 
 ##### Appendix: Connect your Raspberry Pi to the network via WiFi
 1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
