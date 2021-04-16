@@ -185,19 +185,22 @@ sudo kubeadm join 192.168.0.201:6443 --token w4r8s6.w8yzb2pvvnlhb9cp --discovery
 
 `ls /sys/class/net`
 
-2. navigate to the `/etc/netplan` directory and locate the appropriate Netplan configuration files.
+2. navigate to the `/etc/netplan` directory and locate the appropriate Netplan configuration files. Since we have disables cloud config, the config file will be the same we used to assign a static IP to the eth0 network interface:
 
-`sudo nano /etc/netplan/50-cloud-init.yaml`
+`sudo nano /etc/netplan/01-netcfg.yaml`
 
 You will have to add something like this:
 ```
 wifis:
     wlan0:
-        dhcp4: true
-        optional: true
-        access-points:
-            "SSID_name":
-                password: "WiFi_password"
+      access-points:
+        "SSID_name":
+          password: "00000000"
+      dhcp4: no
+      addresses: [192.168.1.102/24]
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses: [8.8.8.8,4.2.2.2]
 
 ```
 
@@ -212,6 +215,11 @@ wifis:
             "SSID_name":
                 identity: "yourUsername@yourInstitution"
                 password: "YOUR_password_here"
+        dhcp4: no
+        addresses: [192.168.1.102/24]
+        gateway4: 192.168.0.1
+        nameservers:
+        addresses: [8.8.8.8,4.2.2.2]
 
 ```
 
