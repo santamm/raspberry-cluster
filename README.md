@@ -239,6 +239,9 @@ Run the following command as from the bare metal section of the Nginx Ingress co
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.34.1/deploy/static/provider/baremetal/deploy.yaml
 ```
 
+You can now check the status:
+```kubectl -n ingress-nginx get pod```
+
 #### Install Prometheus
 Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
 To install, run the following:
