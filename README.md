@@ -207,7 +207,7 @@ and deleted the ollowing 2 lines:
 - [Nginx Ingress controller](https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/): a specialized load balancer for Kubernetes
 - [Prometheus](https://prometheus.io/docs/introduction/overview/): an open-source systems monitoring and alerting toolkit
 - [Grafana](https://grafana.com/docs/grafana/latest/getting-started/): an open source solution for running data analytics, pulling up metrics that make sense of the massive amount of data & to monitor our apps with the help of cool customizable dashboards.
-- cert-manager
+- [cert-manager](https://cert-manager.io/docs/installation/kubernetes/): allows to issue certificates
 
 #### Install Helm
 Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure, and deploy applications and services onto Kubernetes clusters. Helm does:
@@ -225,6 +225,7 @@ Add the chart repositories:
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add infobloxopen https://infobloxopen.github.io/cert-manager/
+helm repo add stable https://charts.helm.sh/stable/
 ```
 
 #### Install Ingress controller
@@ -250,10 +251,32 @@ kubectl create ns monitoring
 helm install prometheus --namespace monitoring stable/prometheus --set server.ingress.enabled=True --set server.ingress.hosts={"prometheus.home.pi"}
 ```
 
+#### Install Grafana
+
+``` 
+helm install grafana --namespace monitoring stable/grafana  --set ingress.enabled=true --set ingress.hosts={"grafana.home.pi"}
+
+# get admin password
+kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
+# Install Cert-manager
+
+```
+helm repo add jetstack https://charts.jetstack.io
+kubectl create ns cert-manager
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --version v0.16.0 \
+  --set installCRDs=true
+```
+
+
 ##### Appendix: Connect your Raspberry Pi to the network via WiFi
 1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
 
-`ls /sys/class/net`
+`ls /sys/class/net` or `ip link show`
 
 2. navigate to the `/etc/netplan` directory and locate the appropriate Netplan configuration files. Since we have disables cloud config, the config file will be the same we used to assign a static IP to the eth0 network interface:
 
