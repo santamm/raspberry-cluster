@@ -273,6 +273,9 @@ helm install \
   --set installCRDs=true
 ```
 
+You can find a guide to issuing certificates with Cert-manager [here](https://medium.com/flant-com/cert-manager-lets-encrypt-ssl-certs-for-kubernetes-7642e463bbce).
+
+
 #### Kubernetes Dashboard
 You can install the Kubernetes dashboad using helm:
 ```helm install -n kube-system kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard```
