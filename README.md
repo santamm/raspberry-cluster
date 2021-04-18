@@ -208,6 +208,7 @@ and deleted the ollowing 2 lines:
 - [Prometheus](https://prometheus.io/docs/introduction/overview/): an open-source systems monitoring and alerting toolkit
 - [Grafana](https://grafana.com/docs/grafana/latest/getting-started/): an open source solution for running data analytics, pulling up metrics that make sense of the massive amount of data & to monitor our apps with the help of cool customizable dashboards.
 - [cert-manager](https://cert-manager.io/docs/installation/kubernetes/): allows to issue certificates
+- [Kubernetes Dashboard]: control cluster resources
 
 #### Install Helm
 Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure, and deploy applications and services onto Kubernetes clusters. Helm does:
@@ -260,7 +261,7 @@ helm install grafana --namespace monitoring stable/grafana  --set ingress.enable
 kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 
-# Install Cert-manager
+#### Install Cert-manager
 
 ```
 helm repo add jetstack https://charts.jetstack.io
@@ -272,6 +273,15 @@ helm install \
   --set installCRDs=true
 ```
 
+#### Kubernetes Dashboard
+You can install the Kubernetes dashboad using helm:
+```helm install -n kube-system kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard```
+
+If you need to make it accessible from outside the cluster:
+```
+export POD_NAME=$(kubectl get pods -n kube-system -l "app.kubernetes.io/name=kubernetes-dashboard,app.kubernetes.io/instance=kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}")
+kubectl -n kube-system port-forward $POD_NAME 8443:8443 --address 0.0.0.0
+```
 
 ##### Appendix: Connect your Raspberry Pi to the network via WiFi
 1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
