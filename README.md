@@ -280,17 +280,36 @@ You can find a guide to issuing certificates with Cert-manager [here](https://me
 You can install the Kubernetes dashboad using helm:
 ```helm install -n kube-system kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard```
 
+To access tha fashboiard you need to start a proxy on the control plane to access the API server:
+```kubectl proxy```
+
+Now you can access the dashboard:
+``` http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/ ```
+
+Alternatively you can forward the port for the dashboard only:
+```kubectl port-forward -n kubernetes-dashboard service/kubernetes-dashboard 8080:443```
+and access the dashboard with:
+```https://localhost:8080```
+
+Either way you will need an authentication token:
+List secrets using:
+```
+kubectl get secrets
+```
+You will see a secret named `dashboard-admin...`
+
+```kubectl describe secret dashboard-admin-sa-token-kw7vn```
+Copy and past the token into the authentication page
 
 
-If you need to make it accessible from outside the cluster:
+
+If you need to make it accessible from outside the cluster you can use an SSH tunnel:
 Run the following command on your local machine:
 
 ```ssh -L 9999:127.0.0.1:8001 -N -f -l user control-plane-ip-address```
 
 ```
-export POD_NAME=$(kubectl get pods -n kube-system -l "app.kubernetes.io/name=kubernetes-dashboard,app.kubernetes.io/instance=kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}")
-kubectl -n kube-system port-forward $POD_NAME 8443:8443 --address 0.0.0.0
-```
+
 
 ##### Appendix: Connect your Raspberry Pi to the network via WiFi
 1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
