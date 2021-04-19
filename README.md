@@ -278,29 +278,36 @@ You can find a guide to issuing certificates with Cert-manager [here](https://me
 
 #### Kubernetes Dashboard
 You can install the Kubernetes dashboad using helm:
-```helm install -n kube-system kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard```
+
+```kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml``
 
 To access tha fashboiard you need to start a proxy on the control plane to access the API server:
 ```kubectl proxy```
 
 Now you can access the dashboard:
+
 ``` http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/ ```
 
 Alternatively you can forward the port for the dashboard only:
+
 ```kubectl port-forward -n kubernetes-dashboard service/kubernetes-dashboard 8080:443```
+
 and access the dashboard with:
+
 ```https://localhost:8080```
 
 Either way you will need an authentication token:
 List secrets using:
+
 ```
 kubectl get secrets
 ```
+
 You will see a secret named `dashboard-admin...`
 
 ```kubectl describe secret dashboard-admin-sa-token-kw7vn```
-Copy and past the token into the authentication page
 
+Copy and past the token into the authentication page
 
 
 If you need to make it accessible from outside the cluster you can use an SSH tunnel:
