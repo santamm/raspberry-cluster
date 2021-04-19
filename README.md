@@ -280,7 +280,13 @@ You can find a guide to issuing certificates with Cert-manager [here](https://me
 You can install the Kubernetes dashboad using helm:
 ```helm install -n kube-system kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard```
 
+
+
 If you need to make it accessible from outside the cluster:
+Run the following command on your local machine:
+
+```ssh -L 9999:127.0.0.1:8001 -N -f -l user control-plane-ip-address```
+
 ```
 export POD_NAME=$(kubectl get pods -n kube-system -l "app.kubernetes.io/name=kubernetes-dashboard,app.kubernetes.io/instance=kubernetes-dashboard" -o jsonpath="{.items[0].metadata.name}")
 kubectl -n kube-system port-forward $POD_NAME 8443:8443 --address 0.0.0.0
