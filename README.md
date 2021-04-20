@@ -316,7 +316,7 @@ Run the following command on your local machine:
 ```ssh -L 9999:127.0.0.1:8001 -N -f -l user control-plane-ip-address```
 
 
-##### Appendix: Connect your Raspberry Pi to the network via WiFi
+### Appendix: Connect your Raspberry Pi to the network via WiFi
 1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
 
 `ls /sys/class/net` or `ip link show`
