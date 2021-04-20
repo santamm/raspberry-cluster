@@ -205,6 +205,7 @@ and deleted the ollowing 2 lines:
 ## Essential add-ons
 - [Helm](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes): Kubernetes package manager, to install packaged applications (charts)
 - [Nginx Ingress controller](https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/): a specialized load balancer for Kubernetes
+- [Node Exporter](https://github.com/prometheus/node_exporter): a tool that collects health info rom each node and exports in a format that Prometheus can use.
 - [Prometheus](https://prometheus.io/docs/introduction/overview/): an open-source systems monitoring and alerting toolkit
 - [Grafana](https://grafana.com/docs/grafana/latest/getting-started/): an open source solution for running data analytics, pulling up metrics that make sense of the massive amount of data & to monitor our apps with the help of cool customizable dashboards.
 - [cert-manager](https://cert-manager.io/docs/installation/kubernetes/): allows to issue certificates
@@ -244,8 +245,41 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 You can now check the status:
 ```kubectl -n ingress-nginx get pod```
 
+### Node-exporter
+
+You need to run the following code in each node:
+
+First download:
+```
+curl -SL https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-armv7.tar.gz > node_exporter.tar.gz && sudo tar -xvf node_exporter.tar.gz -C /usr/local/bin/ --strip-components=1
+```
+
+then create the file `/etc/systemd/system/nodeexporter.service` to make sure it restarts each time the node is rebooted:
+```
+[Unit]
+Description=NodeExporter
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/local/bin/node_exporter
+[Install]
+WantedBy=multi-user.target
+```
+
+Now you can start the services:
+```
+sudo systemctl daemon-reload && sudo systemctl enable nodeexporter && sudo systemctl start nodeexporter
+```
+
+
 #### Install Prometheus
 Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
+
+Install From: `https://kubernetes.github.io/ingress-nginx/user-guide/monitoring/#wildcard-ingresses`
+```
+kubectl apply --kustomize github.com/kubernetes/ingress-nginx/deploy/prometheus/
+```
+
+
 To install, run the following:
 ```
 kubectl create ns monitoring
@@ -255,7 +289,7 @@ helm install prometheus --namespace monitoring stable/prometheus --set server.in
 #### Install Grafana
 
 ``` 
-helm install grafana --namespace monitoring stable/grafana  --set ingress.enabled=true --set ingress.hosts={"grafana.home.pi"}
+helm install grafana --namespace monitoring grafana/grafana  --set ingress.enabled=true --set ingress.hosts={"grafana.home.pi"}
 
 # get admin password
 kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
