@@ -231,7 +231,7 @@ and you will be to access the API server on your local machine on port 8001
 
 
 
-#### Install Helm
+### Install Helm
 Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure, and deploy applications and services onto Kubernetes clusters. Helm does:
 - Install software.
 - Automatically install software dependencies.
@@ -250,7 +250,7 @@ helm repo add infobloxopen https://infobloxopen.github.io/cert-manager/
 helm repo add stable https://charts.helm.sh/stable/
 ```
 
-#### Install Ingress controller
+### Install Ingress controller
 A Kubernetes Ingress controller is a specialized load balancer for Kubernetes environments.
 - Accept traffic from outside the Kubernetes platform, and load balance it to pods (containers) running inside the platform
 - Can manage egress traffic within a cluster for services which need to communicate with other services outside of a cluster
@@ -291,7 +291,7 @@ sudo systemctl daemon-reload && sudo systemctl enable nodeexporter && sudo syste
 ```
 
 
-#### Install Prometheus
+### Install Prometheus
 Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
 Edit the `targets` line in the prometheus.yaml file below with the addresses ot hostnames of your configuration:
 ```
@@ -372,7 +372,7 @@ You have to make the service available in the control-plane with a port-forward
 
 ```kubectl port-forward service/prometheus-service -n monitoring --address 0.0.0.0 9090:9090```
 
-#### Install Grafana
+### Install Grafana
 
 ``` 
 kubectl apply --kustomize github.com/kubernetes/ingress-nginx/deploy/grafana/
@@ -391,7 +391,7 @@ kubectl port-forward -n ingress-nginx service/grafana --address 0.0.0.0 3000:300
 Once you are logged in the grafana dashboard (admin/admin) you can  add the Prometheus datasource to grafana using the url `http://prometheus-service:9090`, and import the Node Exporter grafana dashboard.
 
 
-#### Install Cert-manager
+### Install Cert-manager
 
 ```
 helm repo add jetstack https://charts.jetstack.io
@@ -406,7 +406,7 @@ helm install \
 You can find a guide to issuing certificates with Cert-manager [here](https://medium.com/flant-com/cert-manager-lets-encrypt-ssl-certs-for-kubernetes-7642e463bbce).
 
 
-#### Kubernetes Dashboard
+### Kubernetes Dashboard
 You can install the Kubernetes dashboard:
 
 ```kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml```
@@ -440,7 +440,7 @@ You will see a secret named `dashboard-admin...`
 Copy and past the token into the authentication page
 
 
-### Appendix: Connect your Raspberry Pi to the network via WiFi
+## Appendix: Connect your Raspberry Pi to the network via WiFi
 1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
 
 `ls /sys/class/net` or `ip link show`
