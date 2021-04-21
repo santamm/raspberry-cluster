@@ -202,6 +202,23 @@ and deleted the ollowing 2 lines:
 ```
 
 
+### Access dashboards from local machine
+If you need to access any dashboard running from services in the cluster you have to create an SSH tunnel from your local machine to the control-plane to forward the request:
+Run the following command on your local machine:
+
+```ssh -L 9999:control-plane-ip:port -N -f -l user control-plane-ip``
+
+
+For example if you started a proxy on the control-plane to access the API server with:
+``` kubectl proxy&```
+
+as it listens to the 8001 port you can run:
+```ssh -L 8001:control-plane-ip:8001 -N -f -l user control-plane-ip```
+and you will be to access the API server on your local machine on port 8001
+
+
+
+
 ## Essential add-ons
 - [Helm](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes): Kubernetes package manager, to install packaged applications (charts)
 - [Nginx Ingress controller](https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/): a specialized load balancer for Kubernetes
@@ -210,6 +227,9 @@ and deleted the ollowing 2 lines:
 - [Grafana](https://grafana.com/docs/grafana/latest/getting-started/): an open source solution for running data analytics, pulling up metrics that make sense of the massive amount of data & to monitor our apps with the help of cool customizable dashboards.
 - [cert-manager](https://cert-manager.io/docs/installation/kubernetes/): allows to issue certificates
 - [Kubernetes Dashboard]: control cluster resources
+
+
+
 
 #### Install Helm
 Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure, and deploy applications and services onto Kubernetes clusters. Helm does:
@@ -273,27 +293,103 @@ sudo systemctl daemon-reload && sudo systemctl enable nodeexporter && sudo syste
 
 #### Install Prometheus
 Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
-
-Install From: `https://kubernetes.github.io/ingress-nginx/user-guide/monitoring/#wildcard-ingresses`
+Edit the `targets` line in the prometheus.yaml file below with the addresses ot hostnames of your configuration:
 ```
-kubectl apply --kustomize github.com/kubernetes/ingress-nginx/deploy/prometheus/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yaml: |
+    global:
+      scrape_interval:     15s
+      external_labels:
+        monitor: 'k3s-monitor'
+    scrape_configs:
+      - job_name: 'prometheus'
+        scrape_interval: 5s
+        static_configs:
+          - targets: ['localhost:9090']
+      - job_name: 'K3S'
+        static_configs:
+          - targets: ['192.168.0.201:9100', '192.168.0.202:9100', '192.168.0.203:9100','192.168.0.204:9100']
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-deployment
+  namespace: monitoring
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/prometheus/prometheus.yml
+            subPath: prometheus.yaml
+        ports:
+        - containerPort: 9090
+      volumes:
+        - name: config-volume
+          configMap:
+           name: prometheus-config
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: monitoring
+  name: prometheus-service
+spec:
+  selector:
+    app: prometheus
+  ports:
+  - name: promui
+    protocol: TCP
+    port: 9090
+    targetPort: 9090
 ```
 
 
 To install, run the following:
-```
-kubectl create ns monitoring
-helm install prometheus --namespace monitoring stable/prometheus --set server.ingress.enabled=True --set server.ingress.hosts={"prometheus.home.pi"}
-```
+
+
+```kubectl apply -f prometheus.yaml```
+
+
+You have to make the service available in the control-plane with a port-forward
+
+```kubectl port-forward service/prometheus-service -n monitoring --address 0.0.0.0 9090:9090```
 
 #### Install Grafana
 
 ``` 
-helm install grafana --namespace monitoring grafana/grafana  --set ingress.enabled=true --set ingress.hosts={"grafana.home.pi"}
+kubectl apply --kustomize github.com/kubernetes/ingress-nginx/deploy/grafana/
 
 # get admin password
 kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+# check the service is up and running
+kubectl get svc -n ingress-nginx
 ```
+Now to access the grafana dashboard from your control plane (or from your local machine with an SSH tunnel) you need to forward the request to the node.
+If the service is on port 3000 you can forward from the same port on the control-plane:
+```
+kubectl port-forward -n ingress-nginx service/grafana --address 0.0.0.0 3000:3000
+```
+Once you are logged in the grafana dashboard (admin/admin) you can  add the Prometheus datasource to grafana using the url `http://prometheus-service:9090`, and import the Node Exporter grafana dashboard.
+
 
 #### Install Cert-manager
 
@@ -315,7 +411,7 @@ You can install the Kubernetes dashboard:
 
 ```kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml```
 
-To access tha fashboiard you need to start a proxy on the control plane to access the API server:
+To access tha dashboard you need to start a proxy on the control plane to access the API server:
 ```kubectl proxy```
 
 Now you can access the dashboard:
@@ -342,12 +438,6 @@ You will see a secret named `dashboard-admin...`
 ```kubectl describe secret dashboard-admin-sa-token-kw7vn```
 
 Copy and past the token into the authentication page
-
-
-If you need to make it accessible from outside the cluster you can use an SSH tunnel:
-Run the following command on your local machine:
-
-```ssh -L 9999:127.0.0.1:8001 -N -f -l user control-plane-ip-address```
 
 
 ### Appendix: Connect your Raspberry Pi to the network via WiFi
