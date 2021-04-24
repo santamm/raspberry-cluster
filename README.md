@@ -476,6 +476,7 @@ It will be a bit slow the first time you launch it, as it has to download the mo
 
 In order to deploy on Kubernetes, you must create a deployment yaml file like the one below. For a more detailed description of how to deploy applications into Kubernetes, have a look at [this](https://www.magalix.com/blog/deploying-an-application-on-kubernetes-from-a-to-z).
 First, we create create a deployment, i.e. the pods that host the application containers. 
+
 `deployment.yaml`:
 ```
 apiVersion: extensions/v1beta1
@@ -522,6 +523,7 @@ spec:
 ```
 
 An Ingress resource listen to port 80 and connects to the backend service.
+
 `ingress.yaml`:
 ```
 apiVersion: extensions/v1beta1
