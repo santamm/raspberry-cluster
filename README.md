@@ -1,5 +1,6 @@
 # raspberry-cluster
-How to set up a RaspberryPi Kubernetes Cluster
+## How to build a RaspberryPi Kubernetes Cluster and set up to run a ML webapp
+
 ![Raspberry Pi Cluster](https://github.com/santamm/raspberry-cluster/blob/main/raspberry-pi.jpg)
 
 ### Hosts Setup (repeat on control-plane an each worker)
