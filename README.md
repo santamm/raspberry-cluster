@@ -12,10 +12,10 @@
 6. [Deploying an ML Web App](#webapp)
 7. [Licensing, Authors, and Acknowledgements](#licensing)
 
-### HW Assembling <a name="assembling"></a>
+## HW Assembling <a name="assembling"></a>
 
 
-### Hosts Setup (repeat on control-plane an each worker) <a name="setup"></a>
+## Hosts Setup (repeat on control-plane an each worker) <a name="setup"></a>
 I used Raspberry Pi Imager to flash your microSD card, using `Ubuntu Server 20.04.2.LTS 64-bit` as OS.
 I am assuming the raspberry Pi will be connected to your local network through an ethernet cable, however if you want to use WiFi you can follow the instructions below.
 Boot your host, as Ubuntu comes with ssh already installed you can ssh into your host from your Mac or other system you prefer to work from. I decided to install under the default user ubuntu. However if you want you can create a different user, just remember to add it to the sudoers group with:
@@ -133,7 +133,7 @@ $ sudo apt-mark hold kubelet kubeadm kubectl
 ```
 That's it for the host configuration. Remember you have to do this for your control-plane host and for all your worker nodes.
 
-### Config the Control Plane <a name="control"></a>
+## Config the Control Plane <a name="control"></a>
 Generate a bootstrap token:
 ```
 # Generate a bootstrap token to authenticate nodes joining the cluster
@@ -180,7 +180,7 @@ curl -sSL https://raw.githubusercontent.com/coreos/flannel/v0.12.0/Documentation
 ```
     
     
-### Join the workers nodes to the control plane <a name="workers"></a>
+## Join the workers nodes to the control plane <a name="workers"></a>
 To join a worker node to the cluster, login into the node and run the following:
 
 ```
@@ -453,8 +453,18 @@ You will see a secret named `dashboard-admin...`
 
 Copy and past the token into the authentication page
 
+## Deploying an ML Web App <a name="webapp"></a>
+We will now deploy a ML webapp in our cluster: a [semantic search engine with sentence transformers and Faiss](https://towardsdatascience.com/how-to-build-a-semantic-search-engine-with-transformers-and-faiss-dcbea307a0e8). A semantic search engines uses a numerical representation of text queries using [state-of-the-art language models](https://arxiv.org/abs/1910.01108), indexing them in a high-dimensional vector space and measuring how similar a query vector is to the indexed documents.
+The webapp is built with [Streamlit](https://streamlit.io), an open-source Python library that makes it easy to create applications for machine learning and data science.
 
-## Appendix: Connect your Raspberry Pi to the network via WiFi
+
+
+https://towardsdatascience.com/how-to-deploy-a-semantic-search-engine-with-streamlit-and-docker-on-aws-elastic-beanstalk-42ddce0422f3
+
+
+
+
+#### Appendix: Connect your Raspberry Pi to the network via WiFi
 1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
 
 `ls /sys/class/net` or `ip link show`
@@ -497,7 +507,7 @@ wifis:
 
 ```
 
-## Deploying an ML Web App <a name="webapp"></a>
+
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 For licensing see LICENSE file.
