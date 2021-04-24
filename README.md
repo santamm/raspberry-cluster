@@ -1,5 +1,6 @@
 # raspberry-cluster
 How to set up a RaspberryPi Kubernetes Cluster
+![Raspberry Pi Cluster](https://github.com/santamm/raspberri-cluster/raspberry-pi.jpg)
 
 ### Hosts Setup (repeat on control-plane an each worker)
 I used Raspberry Pi Imager to flash your microSD card, using `Ubuntu Server 20.04.2.LTS 64-bit` as OS.
