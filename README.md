@@ -2,7 +2,20 @@
 
 ![Raspberry Pi Cluster](https://github.com/santamm/raspberry-cluster/blob/main/raspberry-pi.jpg)
 
-### Hosts Setup (repeat on control-plane an each worker)
+## Table of Contents
+
+1. [HW Assembling](#assembling)
+2. [Hosts Setup](#setup)
+3. [Control Plane Configuration](#control)
+4. [Adding Nodes](#workers)
+5. [Essential Add-ons](#addons)
+6. [Deploying an ML Web App](#webapp)
+7. [Licensing, Authors, and Acknowledgements](#licensing)
+
+### HW Assembling <a name="assembling"></a>
+
+
+### Hosts Setup (repeat on control-plane an each worker) <a name="setup"></a>
 I used Raspberry Pi Imager to flash your microSD card, using `Ubuntu Server 20.04.2.LTS 64-bit` as OS.
 I am assuming the raspberry Pi will be connected to your local network through an ethernet cable, however if you want to use WiFi you can follow the instructions below.
 Boot your host, as Ubuntu comes with ssh already installed you can ssh into your host from your Mac or other system you prefer to work from. I decided to install under the default user ubuntu. However if you want you can create a different user, just remember to add it to the sudoers group with:
@@ -120,7 +133,7 @@ $ sudo apt-mark hold kubelet kubeadm kubectl
 ```
 That's it for the host configuration. Remember you have to do this for your control-plane host and for all your worker nodes.
 
-### Config the Control Plane
+### Config the Control Plane <a name="control"></a>
 Generate a bootstrap token:
 ```
 # Generate a bootstrap token to authenticate nodes joining the cluster
@@ -167,7 +180,7 @@ curl -sSL https://raw.githubusercontent.com/coreos/flannel/v0.12.0/Documentation
 ```
     
     
-### Join the workers nodes to the control plane
+### Join the workers nodes to the control plane <a name="workers"></a>
 To join a worker node to the cluster, login into the node and run the following:
 
 ```
@@ -207,7 +220,7 @@ and deleted the ollowing 2 lines:
 If you need to access any dashboard running from services in the cluster you have to create an SSH tunnel from your local machine to the control-plane to forward the request:
 Run the following command on your local machine:
 
-```ssh -L 9999:control-plane-ip:port -N -f -l user control-plane-ip``
+```ssh -L 9999:control-plane-ip:port -N -f -l user control-plane-ip```
 
 
 For example if you started a proxy on the control-plane to access the API server with:
@@ -220,7 +233,7 @@ and you will be to access the API server on your local machine on port 8001
 
 
 
-## Essential add-ons
+## Essential add-ons <a name="addons"></a>
 - [Helm](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes): Kubernetes package manager, to install packaged applications (charts)
 - [Nginx Ingress controller](https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/): a specialized load balancer for Kubernetes
 - [Node Exporter](https://github.com/prometheus/node_exporter): a tool that collects health info rom each node and exports in a format that Prometheus can use.
@@ -484,6 +497,8 @@ wifis:
 
 ```
 
+## Deploying an ML Web App <a name="webapp"></a>
 
-
+## Licensing, Authors, Acknowledgements<a name="licensing"></a>
+For licensing see LICENSE file.
 
