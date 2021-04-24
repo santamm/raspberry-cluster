@@ -456,12 +456,94 @@ Copy and past the token into the authentication page
 ## Deploying an ML Web App <a name="webapp"></a>
 We will now deploy a ML webapp in our cluster: a [semantic search engine with sentence transformers and Faiss](https://towardsdatascience.com/how-to-build-a-semantic-search-engine-with-transformers-and-faiss-dcbea307a0e8). A semantic search engines uses a numerical representation of text queries using [state-of-the-art language models](https://arxiv.org/abs/1910.01108), indexing them in a high-dimensional vector space and measuring how similar a query vector is to the indexed documents.
 The webapp is built with [Streamlit](https://streamlit.io), an open-source Python library that makes it easy to create applications for machine learning and data science.
+You can find more details in [this](https://towardsdatascience.com/how-to-deploy-a-semantic-search-engine-with-streamlit-and-docker-on-aws-elastic-beanstalk-42ddce0422f3) article by Kostas Stathoulopoulos.
+I assume you have some familiarity with docker, otherwise please have a look [here](https://www.freecodecamp.org/news/a-beginner-friendly-introduction-to-containers-vms-and-docker-79a9e3e119b/). Also you can create a free account on [Docker Hub](https://hub.docker.com).
 
+On your machine, download the git repo:
+```
+git clone https://github.com/kstathou/vector_engine```
 
+# Build docker image: User your docker hub user and choose a name for our app
+docker build -t <user>/<image_name> .
 
-https://towardsdatascience.com/how-to-deploy-a-semantic-search-engine-with-streamlit-and-docker-on-aws-elastic-beanstalk-42ddce0422f3
+# Run the image
+docker run -p 8501:8501 <user>/<image_name>
+```
+Now the web app is running on your local machine, you can upload it to dockerhub so that it can be retrieved by any cloud provider:
+``` docker push <user>/<image_name> .```
 
+It will be a bit slow the first time you launch it, as it has to download the models into cache.
 
+In order to deploy on Kubernetes, you must create a deployment yaml file like the one below. For a more detailed description of how to deploy applications into Kubernetes, have a look at [this](https://www.magalix.com/blog/deploying-an-application-on-kubernetes-from-a-to-z).
+First, we create create a deployment, i.e. the pods that host the application containers. 
+`deployment.yaml`:
+```
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    labels:
+        app: frontend
+    name: frontend
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: frontend
+    template:
+        metadata:
+            labels:
+                app: frontend
+        spec:
+            containers:
+            - image: santamm/ml-pi-app:latest
+              imagePullPolicy: IfNotPresent
+              name: frontend
+
+```
+
+To make the application accessible from outside the cluster, we need to create a service. A service is a Kubernetes object that receives HTTP requests and load balances them among the Pods under its control.
+
+`service.yaml`:
+```
+apiVersion: v1
+kind: Service
+metadata:
+    labels:
+        app: frontend
+    name: frontend-svc
+spec:
+    ports:
+    - port: 5000
+      protocol: TCP
+      targetPort: 5000
+    selector:
+        app: frontend
+    type: ClusterIP
+```
+
+An Ingress resource listen to port 80 and connects to the backend service.
+`ingress.yaml`:
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: frontend-ingress
+spec:
+    rules:
+    - http:
+        paths:
+        - path: /api
+          backend:
+            serviceName: frontend-svc
+            servicePort: 5000
+```
+
+Now you can deploy from your control-pane:
+```
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f ingress.yaml
+```
 
 
 #### Appendix: Connect your Raspberry Pi to the network via WiFi
