@@ -1,4 +1,4 @@
-# How to build a Raspberry Pi Kubernetes Cluster and set up to run a ML webapp
+# How to build a Raspberry Pi Kubernetes Cluster and deploy a Machine Learning webapp
 
 ![Raspberry Pi Cluster](https://github.com/santamm/raspberry-cluster/blob/main/raspberry-pi.jpg)
 
