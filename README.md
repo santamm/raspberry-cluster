@@ -9,13 +9,14 @@
 3. [Control Plane Configuration](#control)
 4. [Adding Nodes](#workers)
 5. [Essential Add-ons](#addons)
-6. [Deploying an ML Web App](#webapp)
-7. [Licensing, Authors, and Acknowledgements](#licensing)
+7. [Deploying an ML Web App](#webapp)
+8. [Licensing, Authors, and Acknowledgements](#licensing)
 
-## HW Assembling <a name="assembling"></a>
+<a name="assembling"></a>
+## HW Assembling 
 
-
-## Hosts Setup (repeat on control-plane an each worker) <a name="setup"></a>
+<a name="setup"></a>
+## Hosts Setup (repeat on control-plane an each worker) 
 I used Raspberry Pi Imager to flash your microSD card, using `Ubuntu Server 20.04.2.LTS 64-bit` as OS.
 I am assuming the raspberry Pi will be connected to your local network through an ethernet cable, however if you want to use WiFi you can follow the instructions below.
 Boot your host, as Ubuntu comes with ssh already installed you can ssh into your host from your Mac or other system you prefer to work from. I decided to install under the default user ubuntu. However if you want you can create a different user, just remember to add it to the sudoers group with:
@@ -133,7 +134,8 @@ $ sudo apt-mark hold kubelet kubeadm kubectl
 ```
 That's it for the host configuration. Remember you have to do this for your control-plane host and for all your worker nodes.
 
-## Config the Control Plane <a name="control"></a>
+<a name="control"></a>
+## Config the Control Plane 
 Generate a bootstrap token:
 ```
 # Generate a bootstrap token to authenticate nodes joining the cluster
@@ -179,8 +181,8 @@ curl -sSL https://raw.githubusercontent.com/coreos/flannel/v0.12.0/Documentation
 
 ```
     
-    
-## Join the workers nodes to the control plane <a name="workers"></a>
+<a name="workers"></a>    
+## Join the workers nodes to the control plane 
 To join a worker node to the cluster, login into the node and run the following:
 
 ```
@@ -232,8 +234,8 @@ and you will be to access the API server on your local machine on port 8001
 
 
 
-
-## Essential add-ons <a name="addons"></a>
+<a name="addons"></a>
+## Essential add-ons 
 - [Helm](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes): Kubernetes package manager, to install packaged applications (charts)
 - [Nginx Ingress controller](https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/): a specialized load balancer for Kubernetes
 - [Node Exporter](https://github.com/prometheus/node_exporter): a tool that collects health info rom each node and exports in a format that Prometheus can use.
