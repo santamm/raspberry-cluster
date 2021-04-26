@@ -451,7 +451,7 @@ kubectl port-forward -n ingress-nginx service/grafana --address 0.0.0.0 3000:300
 Once you are logged in the grafana dashboard (admin/admin) you can  add the Prometheus datasource to grafana using the url `http://prometheus-service:9090`, and import the Node Exporter grafana dashboard.
 
 
-![
+![grafana dashboard](https://github.com/santamm/raspberry-cluster/blob/main/grafana-dashboard.jpg)
 
 ### Install Cert-manager
 
