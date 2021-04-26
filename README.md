@@ -281,8 +281,45 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 You can now check the status:
 ```kubectl -n ingress-nginx get pod```
 
-##### Bare-metal considerations [Read whole articke here](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/)
-In traditional cloud environments, where network load balancers are available on-demand, a single Kubernetes manifest suffices to provide a single point of contact to the NGINX Ingress controller to external clients and, indirectly, to any application running inside the cluster. Bare-metal environments lack this commodity, requiring a slightly different setup to offer the same kind of access to external consumers.
+##### Bare-metal Load Balancer
+In traditional cloud environments, where network load balancers are available on-demand, a single Kubernetes manifest suffices to provide a single point of contact to the NGINX Ingress controller to external clients and, indirectly, to any application running inside the cluster. However, Kubernetes does not have a built-in network load-balancer implementation. Bare-metal environments need another solution, like [MetalLB](https://metallb.universe.tf). MetalLB is a network load balancer and can expose cluster services on a dedicated IP address on the network, allowing external clients to connect to services inside the Kubernetes cluster.
+
+To install MetalLB, proceed as follows:
+
+```
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/metallb.yaml
+# On first install only
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+```
+
+MetalLB remains idle until configured. You need to supply a configMap with details of the addresses it can assign to the Kubernetes Service LoadBalancers. The addresses must be free for MetalLB to use and not be assigned to other hosts. The DHCP server in your router should not attempt to assign the addresses that MetalLB will use. In the config map below I assigned addresses between 192.168.0.1 and  192.168.0.126
+
+```
+# Create the config map
+$ cat <<EOF | kubectl create -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: address-pool-1
+      protocol: layer2
+      addresses:
+      - 192.168.0.2-192.168.0.127
+EOF
+
+```
+Now you can expose a deployment using LoadBalancer-type Kubernetes services, like this one:
+
+
+
+
+
+
 
 
 
@@ -388,6 +425,8 @@ To install, run the following:
 
 ```kubectl apply -f prometheus.yaml```
 
+This sets up our scrape config for Prometheus and deploys it into our cluster in the monitoring namespace. We create a service for other pods in the cluster to be able to access it, but we don't give it a load balancer or ingress route because we explicitly do not want to expose it outside our cluster. 
+
 
 You have to make the service available in the control-plane with a port-forward
 
@@ -411,6 +450,8 @@ kubectl port-forward -n ingress-nginx service/grafana --address 0.0.0.0 3000:300
 ```
 Once you are logged in the grafana dashboard (admin/admin) you can  add the Prometheus datasource to grafana using the url `http://prometheus-service:9090`, and import the Node Exporter grafana dashboard.
 
+
+![
 
 ### Install Cert-manager
 
