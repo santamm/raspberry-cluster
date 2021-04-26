@@ -281,7 +281,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 You can now check the status:
 ```kubectl -n ingress-nginx get pod```
 
-##### Bare-metal Load Balancer
+#### Bare-metal Load Balancer
 In traditional cloud environments, where network load balancers are available on-demand, a single Kubernetes manifest suffices to provide a single point of contact to the NGINX Ingress controller to external clients and, indirectly, to any application running inside the cluster. However, Kubernetes does not have a built-in network load-balancer implementation. Bare-metal environments need another solution, like [MetalLB](https://metallb.universe.tf). MetalLB is a network load balancer and can expose cluster services on a dedicated IP address on the network, allowing external clients to connect to services inside the Kubernetes cluster.
 
 To install MetalLB, proceed as follows:
@@ -342,7 +342,7 @@ sudo systemctl daemon-reload && sudo systemctl enable nodeexporter && sudo syste
 ```
 
 
-### Install Prometheus
+### Prometheus
 Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
 Edit the `targets` line in the prometheus.yaml file below with the addresses ot hostnames of your configuration:
 ```
@@ -425,7 +425,7 @@ You have to make the service available in the control-plane with a port-forward
 
 ```kubectl port-forward service/prometheus-service -n monitoring --address 0.0.0.0 9090:9090```
 
-### Install Grafana
+### Grafana
 
 
 ``` 
@@ -445,7 +445,7 @@ Once you are logged in the grafana dashboard (admin/admin) you can  add the Prom
 
 ![grafana dashboard](https://github.com/santamm/raspberry-cluster/blob/main/grafana-dashboard.png)
 
-### Install Cert-manager
+### Cert-manager
 
 ```
 helm repo add jetstack https://charts.jetstack.io
