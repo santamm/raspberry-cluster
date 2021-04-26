@@ -313,14 +313,7 @@ data:
 EOF
 
 ```
-Now you can expose a deployment using LoadBalancer-type Kubernetes services, like this one:
-
-
-
-
-
-
-
+Now you can expose a deployment using LoadBalancer-type Kubernetes services.
 
 
 ### Node-exporter
@@ -434,24 +427,23 @@ You have to make the service available in the control-plane with a port-forward
 
 ### Install Grafana
 
+
 ``` 
-kubectl apply --kustomize github.com/kubernetes/ingress-nginx/deploy/grafana/
+kubectl apply --kustomize grafana-kustom
 
 # get admin password
 kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 
 # check the service is up and running
-kubectl get svc -n ingress-nginx
+kubectl get svc -n monitoring
 ```
-Now to access the grafana dashboard from your control plane (or from your local machine with an SSH tunnel) you need to forward the request to the node.
-If the service is on port 3000 you can forward from the same port on the control-plane:
-```
-kubectl port-forward -n ingress-nginx service/grafana --address 0.0.0.0 3000:3000
-```
+
+It will show the external IP that the Load Balancer has assigned to the service. You can access the grafana dashboard at that address and port.
+
 Once you are logged in the grafana dashboard (admin/admin) you can  add the Prometheus datasource to grafana using the url `http://prometheus-service:9090`, and import the Node Exporter grafana dashboard.
 
 
-![grafana dashboard](https://github.com/santamm/raspberry-cluster/blob/main/grafana-dashboard.jpg)
+![grafana dashboard](https://github.com/santamm/raspberry-cluster/blob/main/grafana-dashboard.png)
 
 ### Install Cert-manager
 
