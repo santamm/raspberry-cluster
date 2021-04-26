@@ -440,7 +440,7 @@ kubectl get svc -n monitoring
 
 It will show the external IP that the Load Balancer has assigned to the service. You can access the grafana dashboard at that address and port.
 
-Once you are logged in the grafana dashboard (admin/admin) you can  add the Prometheus datasource to grafana using the url `http://prometheus-service:9090`, and import the Node Exporter grafana dashboard.
+Once you are logged in the grafana dashboard (admin/admin) you can  add the Prometheus datasource to grafana using the url `http://prometheus-service:9090`, and import the Prometheus Node Exporter dashboard from https://grafana.com/grafana/dashboards/1860.
 
 
 ![grafana dashboard](https://github.com/santamm/raspberry-cluster/blob/main/grafana-dashboard.png)
