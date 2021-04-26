@@ -236,17 +236,15 @@ and you will be to access the API server on your local machine on port 8001
 
 <a name="addons"></a>
 ## Essential add-ons 
-- [Helm](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes): Kubernetes package manager, to install packaged applications (charts)
-- [Nginx Ingress controller](https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/): a specialized load balancer for Kubernetes
-- [Node Exporter](https://github.com/prometheus/node_exporter): a tool that collects health info rom each node and exports in a format that Prometheus can use.
-- [Prometheus](https://prometheus.io/docs/introduction/overview/): an open-source systems monitoring and alerting toolkit
-- [Grafana](https://grafana.com/docs/grafana/latest/getting-started/): an open source solution for running data analytics, pulling up metrics that make sense of the massive amount of data & to monitor our apps with the help of cool customizable dashboards.
-- [cert-manager](https://cert-manager.io/docs/installation/kubernetes/): allows to issue certificates
-- [Kubernetes Dashboard]: control cluster resources
+- [Helm](#helm): Kubernetes [package manager](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes), to install packaged applications (charts)
+- [Nginx Ingress controller](#nginx): a specialized [load balancer](https://www.nginx.com/resources/glossary/kubernetes-ingress-controller/) for Kubernetes
+- [Node Exporter](#node-exporter): a tool that [collects health info from each node](https://github.com/prometheus/node_exporter) and exports in a format that Prometheus can use.
+- [Prometheus](#prometheus): an open-source [systems monitoring and alerting toolkit](https://prometheus.io/docs/introduction/overview/)
+- [Grafana](#grafana): an [open source solution for running data analytics](https://grafana.com/docs/grafana/latest/getting-started/), pulling up metrics that make sense of the massive amount of data & to monitor our apps with the help of cool customizable dashboards.
+- [cert-manager](#cert-manager): a tool that allows to [issue certificates](https://cert-manager.io/docs/installation/kubernetes/)
+- [Kubernetes Dashboard](#dashboard): a tool control cluster resources
 
-
-
-
+<a name="helm"></a>
 ### Install Helm
 Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure, and deploy applications and services onto Kubernetes clusters. Helm does:
 - Install software.
@@ -265,8 +263,8 @@ helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add infobloxopen https://infobloxopen.github.io/cert-manager/
 helm repo add stable https://charts.helm.sh/stable/
 ```
-
-### Install Ingress controller
+<a name="nginx"></a>
+### Nginx Ingress controller
 A Kubernetes Ingress controller is a specialized load balancer for Kubernetes environments.
 - Accept traffic from outside the Kubernetes platform, and load balance it to pods (containers) running inside the platform
 - Can manage egress traffic within a cluster for services which need to communicate with other services outside of a cluster
@@ -315,7 +313,7 @@ EOF
 ```
 Now you can expose a deployment using LoadBalancer-type Kubernetes services.
 
-
+<a name="node-exporter"></a>
 ### Node-exporter
 
 You need to run the following code in each node:
@@ -341,7 +339,7 @@ Now you can start the services:
 sudo systemctl daemon-reload && sudo systemctl enable nodeexporter && sudo systemctl start nodeexporter
 ```
 
-
+<a name="prometheus"></a>
 ### Prometheus
 Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
 Edit the `targets` line in the prometheus.yaml file below with the addresses ot hostnames of your configuration:
@@ -425,8 +423,9 @@ You have to make the service available in the control-plane with a port-forward
 
 ```kubectl port-forward service/prometheus-service -n monitoring --address 0.0.0.0 9090:9090```
 
+<a name="grafana"></a>
 ### Grafana
-
+You can install Grafana using the manifest files in the `grafana-kustom` subdir:
 
 ``` 
 kubectl apply --kustomize grafana-kustom
@@ -445,6 +444,7 @@ Once you are logged in the grafana dashboard (admin/admin) you can  add the Prom
 
 ![grafana dashboard](https://github.com/santamm/raspberry-cluster/blob/main/grafana-dashboard.png)
 
+<a name="cert-manager"></a>
 ### Cert-manager
 
 ```
@@ -459,7 +459,7 @@ helm install \
 
 You can find a guide to issuing certificates with Cert-manager [here](https://medium.com/flant-com/cert-manager-lets-encrypt-ssl-certs-for-kubernetes-7642e463bbce).
 
-
+<a name="dashboard"></a>
 ### Kubernetes Dashboard
 You can install the Kubernetes dashboard:
 
