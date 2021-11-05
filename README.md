@@ -191,6 +191,9 @@ To join a worker node to the cluster, run the following in the control plane fir
 # Add a worker nodes
 # Get join token
 kubeadm token list
+# If the token is expired, generate a new one with the command:
+sudo kubeadm token create
+
 # Get Discovery Token CA cert Hash
 openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
 # Get your API server endpoint with kubectl command:
