@@ -54,6 +54,8 @@ where 192.168.0.201 is the IP you want to assign to your host and 192.168.0.1 is
 You can now save the new configuration:
 
 `sudo netplan apply`
+**What about assigning the static IP from the router config?**
+
 
 #### Set Up SSH Keys on Ubuntu 
 SSH keys provide an easy, secure way of logging into your server and are recommended for all users. You will log in to your hosts from your machine without even having to enter a password.
