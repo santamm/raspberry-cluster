@@ -471,7 +471,7 @@ You can find a guide to issuing certificates with Cert-manager [here](https://me
 ### Kubernetes Dashboard
 You can install the Kubernetes dashboard:
 
-```kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml```
+```kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml```
 
 To access tha dashboard you need to start a proxy on the control plane to access the API server:
 ```kubectl proxy```
