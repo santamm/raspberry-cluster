@@ -185,7 +185,7 @@ curl -sSL https://raw.githubusercontent.com/coreos/flannel/v0.12.0/Documentation
     
 <a name="workers"></a>    
 ## Join the workers nodes to the control plane 
-To join a worker node to the cluster, login into the node and run the following:
+To join a worker node to the cluster, run the following in the control plane first:
 
 ```
 # Add a worker nodes
@@ -196,7 +196,10 @@ openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outfor
 # Get your API server endpoint with kubectl command:
 kubectl cluster-info
 
+```
+Now log into the node and run the following command:
 
+```
 # Now we have everything we need to join a worker node to the Cluster
 kubeadm join \
   <control-plane-host>:<control-plane-port> \
