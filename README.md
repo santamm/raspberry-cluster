@@ -18,7 +18,7 @@
 <a name="setup"></a>
 ## Hosts Setup (repeat on control-plane an each worker) 
 I used Raspberry Pi Imager to flash your microSD card, using `Ubuntu Server 20.04.2.LTS 64-bit` as OS.
-I am assuming the raspberry Pi will be connected to your local network through an ethernet cable, however if you want to use WiFi you can follow the instructions below.
+I am assuming the raspberry Pi will be connected to your local network through an ethernet cable, however if you want to use WiFi you can follow the instructions [below](#wifi-setup).
 Boot your host, as Ubuntu comes with ssh already installed you can ssh into your host from your Mac or other system you prefer to work from. I decided to install under the default user ubuntu. However if you want you can create a different user, just remember to add it to the sudoers group with:
 
 `sudo usermod -aG sudo newuser`
@@ -588,7 +588,7 @@ kubectl apply -f ingress.yaml
 ```
 
 
-#### Appendix: Connect your Raspberry Pi to the network via WiFi
+#### Appendix: Connect your Raspberry Pi to the network via WiFi <a name="wifisetup"></a>
 1. identify the name of your wireless network interface. You will get a list of network interfaces. Usually the wireless one starts with a 'w'
 
 `ls /sys/class/net` or `ip link show`
