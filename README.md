@@ -18,7 +18,7 @@
 <a name="setup"></a>
 ## Hosts Setup (repeat on control-plane an each worker) 
 I used Raspberry Pi Imager to flash your microSD card, using `Ubuntu Server 20.04.2.LTS 64-bit` as OS.
-I am assuming the raspberry Pi will be connected to your local network through an ethernet cable, however if you want to use WiFi you can follow the instructions [below](#wifi-setup).
+I am assuming the raspberry Pi will be connected to your local network through an ethernet cable, however if you want to use WiFi you can follow the instructions [below](#wifisetup).
 Boot your host, as Ubuntu comes with ssh already installed you can ssh into your host from your Mac or other system you prefer to work from. I decided to install under the default user ubuntu. However if you want you can create a different user, just remember to add it to the sudoers group with:
 
 `sudo usermod -aG sudo newuser`
