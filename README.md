@@ -185,7 +185,7 @@ We will use the Flannel CNI add-on.
 ```
 # Download the Flannel YAML data and apply it
 #
-curl -sSL https://raw.githubusercontent.com/coreos/flannel/v0.12.0/Documentation/kube-flannel.yml | kubectl apply -f -
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
 ```
     
