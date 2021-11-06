@@ -175,8 +175,11 @@ kubectl get nodes
 
 ### Install a Container Network Interface (CNI) add-on
 Kubernetes presents a network plugin interface called the CNI, Container Network Interface.
-And then third parties actually provide the plugins
-that implement the pod network. We will use the Flannel CNI add-on.    
+And then third parties actually provide the plugins that implement the pod network. 
+Plugins can do different things. But the general idea is yes, it's big and flat and each node gets allocated a sub set of addresses
+from it. Then, as pods are spun up, they get scheduled to a particular node. The IP address that they get is one from the range of addresses allocated to that node.
+
+We will use the Flannel CNI add-on.    
 
 ```
 # Download the Flannel YAML data and apply it
