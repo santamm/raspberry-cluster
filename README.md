@@ -355,10 +355,14 @@ sudo systemctl daemon-reload && sudo systemctl enable nodeexporter && sudo syste
 ```
 
 <a name="prometheus"></a>
-### Prometheus
+### Monitoring: Prometheus
 Prometheus is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
 Edit the `targets` line in the prometheus.yaml file below with the addresses ot hostnames of your configuration:
 ```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
 apiVersion: v1
 kind: ConfigMap
 metadata:
