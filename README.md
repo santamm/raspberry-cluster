@@ -363,6 +363,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: monitoring
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
