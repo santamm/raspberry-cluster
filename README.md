@@ -173,8 +173,10 @@ You can now validate that the Control Plane has been installed with the kubectl 
 kubectl get nodes
 ```
 
-#### Install a CNI add-on
-A CNI add-on handles configuration and cleanup of the pod networks. We will use the Flannel CNI add-on.    
+### Install a Container Network Interface (CNI) add-on
+Kubernetes presents a network plugin interface called the CNI, Container Network Interface.
+And then third parties actually provide the plugins
+that implement the pod network. We will use the Flannel CNI add-on.    
 
 ```
 # Download the Flannel YAML data and apply it
