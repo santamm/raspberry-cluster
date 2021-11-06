@@ -7,8 +7,9 @@
 1. [HW Assembling](#assembling)
 2. [Hosts Setup](#setup)
 3. [Control Plane Configuration](#control)
-4. [Adding Nodes](#workers)
-5. [Essential Add-ons](#addons)
+4. [Kubernetes Networking](#networking)
+5. [Adding Nodes](#workers)
+6. [Essential Add-ons](#addons)
 7. [Deploying an ML Web App](#webapp)
 8. [Licensing, Authors, and Acknowledgements](#licensing)
 
@@ -172,8 +173,8 @@ You can now validate that the Control Plane has been installed with the kubectl 
 ```
 kubectl get nodes
 ```
-
-### Install a Container Network Interface (CNI) add-on
+<a name="networking"></a>
+## Install a Container Network Interface (CNI) add-on
 Kubernetes presents a network plugin interface called the CNI, Container Network Interface.
 And then third parties actually provide the plugins that implement the pod network. 
 Plugins can do different things. But the general idea is yes, it's big and flat and each node gets allocated a sub set of addresses
