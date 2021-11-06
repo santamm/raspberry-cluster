@@ -287,7 +287,7 @@ A Kubernetes Ingress controller is a specialized load balancer for Kubernetes en
 
 Run the following command as from the bare metal section of the Nginx Ingress controller website:
 ``` 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.34.1/deploy/static/provider/baremetal/deploy.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.4/deploy/static/provider/cloud/deploy.yaml
 ```
 
 You can now check the status:
