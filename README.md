@@ -329,7 +329,7 @@ EOF
 Now you can expose a deployment using LoadBalancer-type Kubernetes services.
 
 <a name="node-exporter"></a>
-### Node-exporter
+### Monitoring: Node-exporter
 
 You need to run the following code in each node:
 
